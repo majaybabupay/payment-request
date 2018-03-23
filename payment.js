@@ -2,7 +2,7 @@ function buildPaymentRequest() {
 
     const supportedInstruments = [
     {
-        supportedMethods: 'https://127.0.0.1:8080/pay3'
+        supportedMethods: 'https://pacific-garden-30467.herokuapp.com/pay3'
     }
 ];
 
