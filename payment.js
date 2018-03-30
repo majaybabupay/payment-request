@@ -50,7 +50,7 @@ function buildPaymentRequest() {
 function buy(request){
 
     request.show().then(result => {
-        console.log('result is ' + JSON.stringify(result.toJSON()));
+        console.log('result is ' + JSON.stringify(result));
     setTimeout(function(){result.complete('success');}, 1000);
 
 });
