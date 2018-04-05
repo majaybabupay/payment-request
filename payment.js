@@ -4,10 +4,17 @@ function buildPaymentRequest() {
     {
         supportedMethods: 'https://pacific-garden-30467.herokuapp.com/pay3',
         data: {
-            flsRequired: true
+            threeDS: true
         },
     }
 ];
+
+    const options = {
+        requestPayerEmail: false,
+        requestPayerName: true,
+        requestPayerPhone: false,
+        requestShipping: true,
+    }
 
     const details = {
         total: {
@@ -32,7 +39,7 @@ function buildPaymentRequest() {
         }],
     };
 
-    var request = new PaymentRequest(supportedInstruments, details);
+    var request = new PaymentRequest(supportedInstruments, details, options);
 
     if (request.canMakePayment) {
         request.canMakePayment().then(result => {
