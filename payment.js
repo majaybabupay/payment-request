@@ -2,7 +2,10 @@ function buildPaymentRequest() {
 
     const supportedInstruments = [
     {
-        supportedMethods: 'https://pacific-garden-30467.herokuapp.com/pay3'
+        supportedMethods: 'https://pacific-garden-30467.herokuapp.com/pay3',
+        data: {
+            flsRequired: true
+        },
     }
 ];
 
