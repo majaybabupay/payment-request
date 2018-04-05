@@ -9,12 +9,7 @@ function buildPaymentRequest() {
     }
 ];
 
-    const options = {
-        requestPayerEmail: false,
-        requestPayerName: true,
-        requestPayerPhone: false,
-        requestShipping: true,
-    }
+    const options = {requestShipping: true};
 
     const details = {
         total: {
@@ -53,6 +48,12 @@ function buildPaymentRequest() {
     });
     }
 
+    request.addEventListener('shippingaddresschange', function(evt) {
+        evt.updateWith(new Promise(function(resolve) {
+            updateDetails(details, request.shippingAddress, resolve);
+        }));
+    });
+
     return request;
 }
 
@@ -89,4 +90,40 @@ function makePayment(){
         console.log('Developer mistake: \'' + e.message + '\'');
         request = buildPaymentRequest();
     }
+}
+
+function updateDetails(details, shippingAddress, callback) {
+    let shippingOption = {
+        id: '',
+        label: '',
+        amount: {currency: 'USD', value: '0.00'},
+        selected: true,
+        pending: false,
+    };
+
+    if (shippingAddress.country === 'US') {
+        if (shippingAddress.region === 'CA') {
+            shippingOption.id = 'californiaFreeShipping';
+            shippingOption.label = 'Free shipping in California';
+            details.total.amount.value = '60.00';
+        } else {
+            shippingOption.id = 'unitedStatesStandardShipping';
+            shippingOption.label = 'Standard shipping in US';
+            shippingOption.amount.value = '5.00';
+            details.total.amount.value = '58.00';
+        }
+        details.shippingOptions = [shippingOption];
+        delete details.error;
+    } else {
+        // Don't ship outside of US for the purposes of this example.
+        shippingOption.label = 'Shipping';
+        shippingOption.pending = true;
+        details.total.amount.value = '55.00';
+        details.error = 'Cannot ship outside of US.';
+        delete details.shippingOptions;
+    }
+
+    details.displayItems.splice(1, 1, shippingOption);
+    callback(details);
+
 }
