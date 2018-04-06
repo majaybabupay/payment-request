@@ -62,7 +62,7 @@ function buy(request){
 
     request.show().then(result => {
         console.log('result is ' + JSON.stringify(result.toJSON()));
-    setTimeout(function(){result.complete('success');}, 3000);
+    setTimeout(function(){result.complete('success');}, 1000);
 
 });
 }
